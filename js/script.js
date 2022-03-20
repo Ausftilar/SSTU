@@ -29,6 +29,42 @@ window.addEventListener('DOMContentLoaded', () => {
         modalForms.classList.remove('modal-forms_active');
     });
 
+    //Tabs
+
+    let tabs = document.querySelectorAll('.list__item'),
+        tabsContent = document.querySelectorAll('.tabcontent'),
+        tabsParent = document.querySelector('.list__wrapper_list');
+          
+    function hideTabContent() {
+        tabsContent.forEach(item => {
+            item.classList.add('hide');
+            item.classList.remove('show', 'fade');
+        });
+
+        tabs.forEach(item => {
+            item.classList.remove('list__item_active');
+        });
+    }
+
+    function showTabContent(i = 0) {
+        tabsContent[i].classList.add('show', 'fade');
+        tabsContent[i].classList.remove('hide');
+        tabs[i].classList.add('list__item_active');
+    }
+
+    tabsParent.addEventListener('click', (event) => {
+        const target = event.target;
+        
+        if (target && target.classList.contains('list__item')) {
+            tabs.forEach((item, i) => {
+                if (target === item) {
+                    hideTabContent();
+                    showTabContent(i);
+                }
+            });
+        }
+    });
+
     //FilmsDB
 
     const movieDB = {
@@ -58,6 +94,7 @@ window.addEventListener('DOMContentLoaded', () => {
             sortArr(movieDB.movies);
 
             createMovieList(movieDB.movies, movieList);
+            tabs = document.querySelectorAll('.list__item');
         }
 
         e.target.reset();
@@ -87,48 +124,14 @@ window.addEventListener('DOMContentLoaded', () => {
                 movieDB.movies.splice(i, 1);
                 
                 createMovieList(films, parent);
+                tabs = document.querySelectorAll('.list__item');
             });
         });
     }
 
     createMovieList(movieDB.movies, movieList);
-
-    //Tabs
-
-    const tabs = document.querySelectorAll('.list__item'),
-          tabsContent = document.querySelectorAll('.tabcontent'),
-          tabsParent = document.querySelectorAll('.list__wrapper_list');
-
-    function hideTabContent() {
-        tabsContent.forEach(item => {
-            item.classList.add('hide');
-            item.classList.remove('show', 'fade');
-        });
-
-        tabs.forEach(item => {
-            item.classList.remove('list__item_active');
-        });
-    }
-
-    function showTabContent(i = 0) {
-        tabsContent[i].classList.add('show', 'fade');
-        tabsContent[i].classList.remove('hide');
-        tabs[i].classList.add('list__item_active');
-    }
-
+    tabs = document.querySelectorAll('.list__item');
+    
     hideTabContent();
     showTabContent();
-
-    movieList.addEventListener('click', (event) => {
-        const target = event.target;
-
-        if (target && target.classList.contains('list__item')) {
-            tabs.forEach((item, i) => {
-                if (target == item) {
-                    hideTabContent();
-                    showTabContent(i);
-                }
-            });
-        }
-    });
 });
